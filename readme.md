@@ -1,6 +1,6 @@
 # Alpha Zero 
 
-##Authors :
+## Authors :
 <ul>
     <li>Zhengyang LAN</li>
     <li>Luqman FERDJANI</li>

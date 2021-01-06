@@ -4,6 +4,8 @@ Module used to define the neural network used for learning simultaneously :
 - The value function for each state
 """
 import tensorflow as tf
+import numpy as np
+
 
 class TicTacToeNet(tf.keras.Model):
     """
@@ -17,6 +19,8 @@ class TicTacToeNet(tf.keras.Model):
         super(TicTacToeNet, self).__init__()
 
         # Computer vision layers
+        self.conv = tf.keras.layers.Conv2D(128, (3, 3), padding="same", activation="relu", name="conv")
+        self.conv = tf.keras.layers.Conv2D(128, (3, 3), padding="same", activation="relu", name="conv")
         self.conv = tf.keras.layers.Conv2D(128, (3, 3), padding="valid", activation="relu", name="conv")
 
         # Flattening in order to feed to dense layers
@@ -26,8 +30,8 @@ class TicTacToeNet(tf.keras.Model):
         self.dense = tf.keras.layers.Dense(512, activation='relu', name="dense")
 
         # Outputting probabilities for each
-        self.policy = tf.keras.layers.Dense(9, activation='softmax')
-        self.value = tf.keras.layers.Dense(1, activation='tanh')
+        self.policy = tf.keras.layers.Dense(9, activation='softmax', name="policy")
+        self.value = tf.keras.layers.Dense(1, activation='tanh', name="value")
 
     def call(self, inputs):
         """
@@ -35,8 +39,7 @@ class TicTacToeNet(tf.keras.Model):
         :param inputs: the input board state for tic tac toe
         :return: the value of the state and the policy for this particular state
         """
-        x = tf.reshape(inputs, (1, 3, 3, 1))
-        x = self.conv(x)
+        x = self.conv(inputs)
         x = self.flatten(x)
         x = self.dense(x)
         return self.policy(x), self.value(x)
@@ -45,9 +48,13 @@ class TicTacToeNet(tf.keras.Model):
 if __name__ == "__main__":
 
     nnet = TicTacToeNet()
+    nnet.build((1, 3, 3, 1))
     board = tf.constant([[0, 1, -1], [0, 0, 0], [0, 0, 0]], dtype=tf.float32)
     pi, v = nnet.call(board)
+    print(nnet.summary())
     print(pi)
     print(v)
+
+    print(np.array2string(np.arange(10)))
 
 

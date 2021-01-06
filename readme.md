@@ -51,11 +51,29 @@ as AlphaGo Fan and AlphaGo Lee. However these implementations required domain ex
 implement. Indeed one of the advantages of AlphaZero is that its non reliance on domain expert knowledge makes its implementation
 easy.
 
+## Set up
+
+In order to set up all libraries needed to run the games, just run :
+
+<code>pip install -r requirements.txt</code>
+
 ## Implemented games
 
 ### Tic Tac Toe
 
-TO DO
+The classic game of tic tac toe, a good start to see if our implementation actually learns anything and a classic
+easy to play game.
+
+In order to play, run in a terminal the following command in the tic_tac_toe folder :
+
+<code>$ python3 play.py</code>
+
+If you want to re-run the training phase just run :
+
+<code>$ python3 main.py</code>
+
+Unfortunately the hyperparameters used in order to train the neural network have to be modified by hand
+in the main file if anything else is to be tested.
 
 ## TO DO
 

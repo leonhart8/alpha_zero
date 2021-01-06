@@ -59,14 +59,14 @@ class AlphaZero:
             kf = KFold(n_splits=5)
 
             # Training current net with previous net using
-            curr_net = TicTacToeNet()
-            curr_net.compile(
-                optimizer=keras.optimizers.Adam(self.lr),
-                loss=["categorical_crossentropy", "mean_squared_error"]
-            )
+            #best_net = TicTacToeNet()
+            #best_net.compile(
+            #    optimizer=keras.optimizers.Adam(self.lr),
+            #    loss=["categorical_crossentropy", "mean_squared_error"]
+            #)
 
             for train_idx, test_idx in kf.split(X):
-                curr_net.fit(
+                best_net.fit(
                     tf.convert_to_tensor(np.array(X)[train_idx]),
                     [tf.convert_to_tensor(np.array(y_1)[train_idx]), tf.convert_to_tensor(np.array(y_2)[train_idx])],
                     batch_size=32,
@@ -75,19 +75,20 @@ class AlphaZero:
                                      tf.convert_to_tensor(np.array(y_2)[test_idx])])
                 )
 
-            wins = []
+            #wins = []
 
-            for _ in range(self.num_plays):
-                wins.append(play.ai_vs_ai(curr_net, best_net, verbose=False))
-            win_rate = sum(wins) / self.num_plays
-            if win_rate >= 0.55:
-                curr_net.save("best_net")
-                print("Iteration", i, "a new neural net prevailed ...")
+            #for _ in range(self.num_plays):
+            #    wins.append(play.ai_vs_ai(curr_net, best_net, verbose=False))
+            #win_rate = sum(wins) / self.num_plays
+            #if win_rate >= 0.55:
+            #    curr_net.save("best_net")
+            #    print("Iteration", i, "a new neural net prevailed ...")
 
-            if i == 0:
-                best_net.save("best_net")
+            #if i == 0:
+            #    best_net.save("best_net")
 
-            best_net = keras.models.load_model("best_net")
+            best_net.save("best_net")
+            #best_net = keras.models.load_model("best_net")
 
         return best_net
 

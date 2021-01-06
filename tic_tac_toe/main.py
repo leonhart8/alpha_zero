@@ -8,7 +8,7 @@ from tictactoe import TicTacToe
 NUM_ITER = 1000
 NUM_GAMES = 100
 NUM_SIM = 50
-NUM_PLAYS = 100
+NUM_PLAYS = 1000
 LEARNING_RATE = 1e-3
 TAU_ITER = 5
 

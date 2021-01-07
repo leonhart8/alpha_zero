@@ -58,37 +58,32 @@ class AlphaZero:
             # In theory I would need to evaluate my nn against the previous ones but for now lets make things simple
             kf = KFold(n_splits=5)
 
-            # Training current net with previous net using
-            #best_net = TicTacToeNet()
-            #best_net.compile(
-            #    optimizer=keras.optimizers.Adam(self.lr),
-            #    loss=["categorical_crossentropy", "mean_squared_error"]
-            #)
+            # Sample
+            if len(X) > 2048:
+                if len(X) > 500000:
+                    last_500000_eps_x, last_500000_eps_y_1, last_500000_eps_y_2 =\
+                        np.array(X[-1:499999:-1]), np.array(y_1[-1:499999:-1]), np.array(y_2[-1:499999:-1])
+                else:
+                    last_500000_eps_x, last_500000_eps_y_1, last_500000_eps_y_2 = \
+                        np.array(X), np.array(y_1), np.array(y_2)
+                sample = np.random.choice(len(last_500000_eps_x), size=2048, replace=False)
+                train_data, train_targets_1, train_targets_2 =\
+                    last_500000_eps_x[sample], last_500000_eps_y_1[sample], last_500000_eps_y_2[sample]
+            else:
+                train_data, train_targets_1, train_targets_2 = np.array(X), np.array(y_1), np.array(y_2)
 
-            for train_idx, test_idx in kf.split(X):
+            for train_idx, test_idx in kf.split(train_data):
                 best_net.fit(
-                    tf.convert_to_tensor(np.array(X)[train_idx]),
-                    [tf.convert_to_tensor(np.array(y_1)[train_idx]), tf.convert_to_tensor(np.array(y_2)[train_idx])],
+                    tf.convert_to_tensor(train_data[train_idx]),
+                    [tf.convert_to_tensor(train_targets_1[train_idx]),
+                     tf.convert_to_tensor(train_targets_2[train_idx])],
                     batch_size=32,
-                    validation_data=(tf.convert_to_tensor(np.array(X)[test_idx]),
-                                     [tf.convert_to_tensor(np.array(y_1)[test_idx]),
-                                     tf.convert_to_tensor(np.array(y_2)[test_idx])])
+                    validation_data=(tf.convert_to_tensor(train_data[test_idx]),
+                                     [tf.convert_to_tensor(train_targets_1[test_idx]),
+                                     tf.convert_to_tensor(train_targets_2[test_idx])])
                 )
 
-            #wins = []
-
-            #for _ in range(self.num_plays):
-            #    wins.append(play.ai_vs_ai(curr_net, best_net, verbose=False))
-            #win_rate = sum(wins) / self.num_plays
-            #if win_rate >= 0.55:
-            #    curr_net.save("best_net")
-            #    print("Iteration", i, "a new neural net prevailed ...")
-
-            #if i == 0:
-            #    best_net.save("best_net")
-
             best_net.save("best_net")
-            #best_net = keras.models.load_model("best_net")
 
         return best_net
 
@@ -106,7 +101,7 @@ class AlphaZero:
         # Initializing monte carlo tree search
         mcts = MCTS()
 
-        # Initializing arrays that will contain trianing examples
+        # Initializing arrays that will contain training examples
         X, y_1, y_2 = [], [], []
 
         # Initializing tau, will be set to an infinitesimal value after 29 iterations

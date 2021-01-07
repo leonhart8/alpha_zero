@@ -100,12 +100,12 @@ class Play:
 
         while not game.is_terminal(state):
             if player == human:
-                print("Your turn to choose, select a free slot on the board (integer between 0 and 9) with no piece on it")
+                print("Your turn to choose, select a free slot on the board (integer between 1 and 9) with no piece on it")
                 action = input()
-                while not action.isdigit() or int(action) < 0 or int(action) > 8 or not game.is_valid(state, int(action)):
-                    print("Invalid input, choose an integer between 0 and 9 and make sure to target a free cell")
+                while not action.isdigit() or int(action) < 1 or int(action) > 9 or not game.is_valid(state, int(action) - 1):
+                    print("Invalid input, choose an integer between 1 and 9 and make sure to target a free cell")
                     action = input()
-                action = int(action)
+                action = int(action) - 1
             else:
                 print("AI's turn, one must wonder what it's thinking right now ...")
                 for _ in range(num_sim):

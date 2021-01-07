@@ -67,6 +67,7 @@ class MCTS:
                 self.P[hash_state] = masked_probas
             else:
                 print("Weird, legal moves all set to 0 ?")
+                return
 
             # The total visits to a state
             self.totals[hash_state] = 0

@@ -19,8 +19,8 @@ class TicTacToeNet(tf.keras.Model):
         super(TicTacToeNet, self).__init__()
 
         # Computer vision layers
-        self.conv = tf.keras.layers.Conv2D(128, (3, 3), padding="same", activation="relu", name="conv")
-        self.conv = tf.keras.layers.Conv2D(128, (3, 3), padding="same", activation="relu", name="conv")
+        # self.conv = tf.keras.layers.Conv2D(128, (3, 3), padding="same", activation="relu", name="conv")
+        # self.conv = tf.keras.layers.Conv2D(128, (3, 3), padding="same", activation="relu", name="conv")
         self.conv = tf.keras.layers.Conv2D(128, (3, 3), padding="valid", activation="relu", name="conv")
 
         # Flattening in order to feed to dense layers
